@@ -5,6 +5,7 @@ let snakeX = 5,
   snakeY = 10;
 let velocityX = 0,
   velocityY = 0;
+let snakeBody = [];
 
 const changeFoodPosition = () => {
   //change random position of food
@@ -30,11 +31,23 @@ const initGame = () => {
   let htmlMrkup = `<div class="food" style="grid-area : ${foodY} / ${foodX}"><i class="fa-solid fa-egg"></i></div>`;
   if (snakeX === foodX && snakeY === foodY) {
     changeFoodPosition();
+    snakeBody.push([foodX, foodY]);
   }
+  for (let i = snakeBody.length - 1; i > 0; i--) {
+    //
+    snakeBody[i] = snakeBody[i - 1];
+  }
+
+  snakeBody[0] = [snakeX, snakeY]; // set first snake position
+
   //updating snake head position
   snakeX += velocityX;
   snakeY += velocityY;
-  htmlMrkup += `<div class="head" style="grid-area : ${snakeY} / ${snakeX}"> <i class="fa fa-user"></i></div>`;
+
+  for (let i = 0; i < snakeBody.length; i++) {
+    //add div for snake body
+    htmlMrkup += `<div class="head" style="grid-area : ${snakeBody[i][1]} / ${snakeBody[i][0]}"> <i class="fa fa-user"></i></div>`;
+  }
   playBoard.innerHTML = htmlMrkup;
 };
 changeFoodPosition();
