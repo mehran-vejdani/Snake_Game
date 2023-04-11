@@ -38,13 +38,9 @@ body {
 }
 
 .play-board .food {
-  background: #000;
-  color: #fff;
-  text-align: center;
-  border-radius: 50%;
+  background: #6f00ff;
 }
 
 .play-board .head {
-  background: #000000;
-  color: #fff;
+  background: #ff0000;
 }
