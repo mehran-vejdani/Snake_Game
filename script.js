@@ -6,28 +6,37 @@ let snakeX = 5,
 let velocityX = 0,
   velocityY = 0;
 let snakeBody = [];
+let gameOver = false;
+let setIntervalId;
 
 const changeFoodPosition = () => {
   //change random position of food
   foodX = Math.floor(Math.random() * 30) + 1;
   foodY = Math.floor(Math.random() * 30) + 1;
 };
+
+const handleGameOver = () => {
+  clearInterval(setIntervalId);
+  alert("Game Over");
+  location.reload();
+};
 const changeDirextion = (event) => {
-  if (event.key === "ArrowUp") {
+  if (event.key === "ArrowUp" && velocityY != 1) {
     velocityX = 0;
     velocityY = -1;
-  } else if (event.key === "ArrowDown") {
+  } else if (event.key === "ArrowDown" && velocityY != -1) {
     velocityX = 0;
     velocityY = 1;
-  } else if (event.key === "ArrowLeft") {
+  } else if (event.key === "ArrowLeft" && velocityX != 1) {
     velocityX = -1;
     velocityY = 0;
-  } else if (event.key === "ArrowRight") {
+  } else if (event.key === "ArrowRight" && velocityX != -1) {
     velocityX = 1;
     velocityY = 0;
   }
 };
 const initGame = () => {
+  if (gameOver) return handleGameOver();
   let htmlMrkup = `<div class="food" style="grid-area : ${foodY} / ${foodX}"><i class="fa-solid fa-egg"></i></div>`;
   if (snakeX === foodX && snakeY === foodY) {
     changeFoodPosition();
@@ -43,7 +52,9 @@ const initGame = () => {
   //updating snake head position
   snakeX += velocityX;
   snakeY += velocityY;
-
+  if (snakeX <= 0 || snakeX > 30 || snakeY < 0 || snakeY > 30) {
+    gameOver = true;
+  }
   for (let i = 0; i < snakeBody.length; i++) {
     //add div for snake body
     htmlMrkup += `<div class="head" style="grid-area : ${snakeBody[i][1]} / ${snakeBody[i][0]}"> <i class="fa fa-user"></i></div>`;
@@ -52,6 +63,6 @@ const initGame = () => {
 };
 changeFoodPosition();
 //move after 125 milisecond
-setInterval(initGame, 125);
+setIntervalId = setInterval(initGame, 125);
 
 document.addEventListener("keydown", changeDirextion);
