@@ -1,6 +1,7 @@
 const playBoard = document.querySelector(".play-board");
 const scoreElement = document.querySelector(".score");
 const highScoreElement = document.querySelector(".high-score");
+const controls = document.querySelectorAll(".controls i");
 
 let foodX, foodY;
 let snakeX = 5,
@@ -25,7 +26,7 @@ const handleGameOver = () => {
   alert("Game Over");
   location.reload();
 };
-const changeDirextion = (event) => {
+const changeDirection = (event) => {
   if (event.key === "ArrowUp" && velocityY != 1) {
     velocityX = 0;
     velocityY = -1;
@@ -40,6 +41,12 @@ const changeDirextion = (event) => {
     velocityY = 0;
   }
 };
+
+controls.forEach((key) => {
+  key.addEventListener("click", () =>
+    changeDirection({ key: key.dataset.key })
+  );
+});
 const initGame = () => {
   if (gameOver) return handleGameOver();
   let htmlMrkup = `<div class="food" style="grid-area : ${foodY} / ${foodX}"></div>`;
@@ -83,4 +90,4 @@ changeFoodPosition();
 //move after 125 milisecond
 setIntervalId = setInterval(initGame, 125);
 
-document.addEventListener("keydown", changeDirextion);
+document.addEventListener("keydown", changeDirection);
